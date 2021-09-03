@@ -17,12 +17,12 @@ func floatEquals(a, b float64) bool {
 }
 
 func ExampleStatsD() {
-	addr, _ := net.ResolveTCPAddr("net", ":2003")
+	addr, _ := net.ResolveUDPAddr("net", ":2003")
 	go StatsD(metrics.DefaultRegistry, 1*time.Second, "some.prefix", addr)
 }
 
 func ExampleStatsDWithConfig() {
-	addr, _ := net.ResolveTCPAddr("net", ":2003")
+	addr, _ := net.ResolveUDPAddr("net", ":2003")
 	go StatsDWithConfig(StatsDConfig{
 		Addr:          addr,
 		Registry:      metrics.DefaultRegistry,
@@ -66,7 +66,7 @@ func NewTestServer(t *testing.T, prefix string) (map[string]float64, net.Listene
 	r := metrics.NewRegistry()
 
 	c := StatsDConfig{
-		Addr:          ln.Addr().(*net.TCPAddr),
+		Addr:          ln.Addr().(*net.UDPAddr),
 		Registry:      r,
 		FlushInterval: 10 * time.Millisecond,
 		DurationUnit:  time.Millisecond,
